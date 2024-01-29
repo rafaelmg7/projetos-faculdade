@@ -1,0 +1,145 @@
+c19.c - Relatório
+
+
+Aluno: Rafael Martins Gomes
+
+
+1. A variável 'char* buf' é declarada no escopo global, mas não é alocada na memória; logo, qualquer tentativa de escrita nela, como acontece na linha 22, resultará em erro.
+
+2.
+Script started on 2023-04-08 15:12:19-03:00 [TERM="xterm-256color" TTY="/dev/pts/3" COLUMNS="165" LINES="13"]
+
+]0;rafaelmg@DESKTOP-R55VT5A: ~/Documents/ED/pa03[01;32mrafaelmg@DESKTOP-R55VT5A[00m:[01;34m~/Documents/ED/pa03[00m$ gdb c19
+[35;1m[35;1mGNU gdb [m[35;1m(Ubuntu 9.2-0ubuntu1~20.04.1) [m[35;1m9.2[m[35;1m
+[m[mCopyright (C) 2020 Free Software Foundation, Inc.
+License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.
+Type "show copying" and "show warranty" for details.
+This GDB was configured as "x86_64-linux-gnu".
+Type "show configuration" for configuration details.
+For bug reporting instructions, please see:
+<http://www.gnu.org/software/gdb/bugs/>.
+Find the GDB manual and other documentation resources online at:
+    <http://www.gnu.org/software/gdb/documentation/>.
+[m--Type <RET> for more, q to quit, c to continue without paging--
+
+For help, type "help".
+Type "apropos word" to search for commands related to "word"...
+Reading symbols from [32mc19[m...
+(gdb) run
+Starting program: /home/rafaelmg/Documents/ED/pa03/c19 
+enter a number:
+10
+
+Program received signal SIGSEGV, Segmentation fault.
+[34m0x00007ffff7e58ae7[m in [33m__GI__IO_str_overflow[m ([36mfp[m=0x7fffffffdc50, [36mc[m=115) at [32mstrops.c[m:133
+133	strops.c: No such file or directory.
+(gdb) continue
+Continuing.
+
+Program terminated with signal SIGSEGV, Segmentation fault.
+The program no longer exists.
+(gdb) quit
+]0;rafaelmg@DESKTOP-R55VT5A: ~/Documents/ED/pa03[01;32mrafaelmg@DESKTOP-R55VT5A[00m:[01;34m~/Documents/ED/pa03[00m$ valgrind --leak-check=full ./c19
+==9882== Memcheck, a memory error detector
+==9882== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==9882== Using Valgrind-3.15.0 and LibVEX; rerun with -h for copyright info
+==9882== Command: ./c19
+==9882== 
+enter a number:
+10
+==9882== Invalid write of size 1
+==9882==    at 0x48EEAE7: _IO_str_overflow (strops.c:133)
+==9882==    by 0x48ED023: _IO_default_xsputn (genops.c:399)
+==9882==    by 0x48ED023: _IO_default_xsputn (genops.c:370)
+==9882==    by 0x48D1971: __vfprintf_internal (vfprintf-internal.c:1373)
+==9882==    by 0x48E00F8: __vsprintf_internal (iovsprintf.c:95)
+==9882==    by 0x48BCEC7: sprintf (sprintf.c:30)
+==9882==    by 0x10929C: printSum (c19.c:22)
+==9882==    by 0x1092D4: main (c19.c:28)
+==9882==  Address 0x0 is not stack'd, malloc'd or (recently) free'd
+==9882== 
+==9882== 
+==9882== Process terminating with default action of signal 11 (SIGSEGV)
+==9882==  Access not within mapped region at address 0x0
+==9882==    at 0x48EEAE7: _IO_str_overflow (strops.c:133)
+==9882==    by 0x48ED023: _IO_default_xsputn (genops.c:399)
+==9882==    by 0x48ED023: _IO_default_xsputn (genops.c:370)
+==9882==    by 0x48D1971: __vfprintf_internal (vfprintf-internal.c:1373)
+==9882==    by 0x48E00F8: __vsprintf_internal (iovsprintf.c:95)
+==9882==    by 0x48BCEC7: sprintf (sprintf.c:30)
+==9882==    by 0x10929C: printSum (c19.c:22)
+==9882==    by 0x1092D4: main (c19.c:28)
+==9882==  If you believe this happened as a result of a stack
+==9882==  overflow in your program's main thread (unlikely but
+==9882==  possible), you can try to increase the size of the
+==9882==  main thread stack using the --main-stacksize= flag.
+==9882==  The main thread stack size used in this run was 8388608.
+==9882== 
+==9882== HEAP SUMMARY:
+==9882==     in use at exit: 0 bytes in 0 blocks
+==9882==   total heap usage: 2 allocs, 2 frees, 2,048 bytes allocated
+==9882== 
+==9882== All heap blocks were freed -- no leaks are possible
+==9882== 
+==9882== For lists of detected and suppressed errors, rerun with: -s
+==9882== ERROR SUMMARY: 1 errors from 1 contexts (suppressed: 0 from 0)
+Segmentation fault
+]0;rafaelmg@DESKTOP-R55VT5A: ~/Documents/ED/pa03[01;32mrafaelmg@DESKTOP-R55VT5A[00m:[01;34m~/Documents/ED/pa03[00m$ exit
+exit
+
+Script done on 2023-04-08 15:12:40-03:00 [COMMAND_EXIT_CODE="139"]
+
+3. Para corrigir o erro, aloquei um bloco de memória para a string 'buf' e, ao final do programa, liberei a memória alocada.
+
+4.
+Script started on 2023-04-08 15:21:32-03:00 [TERM="xterm-256color" TTY="/dev/pts/3" COLUMNS="165" LINES="13"]
+
+]0;rafaelmg@DESKTOP-R55VT5A: ~/Documents/ED/pa03[01;32mrafaelmg@DESKTOP-R55VT5A[00m:[01;34m~/Documents/ED/pa03[00m$ gdb c19
+[35;1m[35;1mGNU gdb [m[35;1m(Ubuntu 9.2-0ubuntu1~20.04.1) [m[35;1m9.2[m[35;1m
+[m[mCopyright (C) 2020 Free Software Foundation, Inc.
+License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.
+Type "show copying" and "show warranty" for details.
+This GDB was configured as "x86_64-linux-gnu".
+Type "show configuration" for configuration details.
+For bug reporting instructions, please see:
+<http://www.gnu.org/software/gdb/bugs/>.
+Find the GDB manual and other documentation resources online at:
+    <http://www.gnu.org/software/gdb/documentation/>.
+[m--Type <RET> for more, q to quit, c to continue without paging--
+
+For help, type "help".
+Type "apropos word" to search for commands related to "word"...
+Reading symbols from [32mc19[m...
+(gdb) run
+Starting program: /home/rafaelmg/Documents/ED/pa03/c19 
+enter a number:
+10
+sum=55
+[Inferior 1 (process 11796) exited normally]
+(gdb) quit
+]0;rafaelmg@DESKTOP-R55VT5A: ~/Documents/ED/pa03[01;32mrafaelmg@DESKTOP-R55VT5A[00m:[01;34m~/Documents/ED/pa03[00m$ valgrind --leak-checl[Kk=full ./c19
+==11871== Memcheck, a memory error detector
+==11871== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==11871== Using Valgrind-3.15.0 and LibVEX; rerun with -h for copyright info
+==11871== Command: ./c19
+==11871== 
+enter a number:
+10
+sum=55
+==11871== 
+==11871== HEAP SUMMARY:
+==11871==     in use at exit: 0 bytes in 0 blocks
+==11871==   total heap usage: 3 allocs, 3 frees, 2,148 bytes allocated
+==11871== 
+==11871== All heap blocks were freed -- no leaks are possible
+==11871== 
+==11871== For lists of detected and suppressed errors, rerun with: -s
+==11871== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+]0;rafaelmg@DESKTOP-R55VT5A: ~/Documents/ED/pa03[01;32mrafaelmg@DESKTOP-R55VT5A[00m:[01;34m~/Documents/ED/pa03[00m$ exit
+exit
+
+Script done on 2023-04-08 15:21:54-03:00 [COMMAND_EXIT_CODE="0"]

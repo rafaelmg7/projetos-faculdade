@@ -1,0 +1,87 @@
+c14.c - Relatório
+
+
+Aluno: Rafael Martins Gomes
+
+
+1. Nenhuma das variáveis declaradas é inicializada, o que fará com que o fatorial desejado não seja impresso. Além disso, a função 'main' deveria retornar um inteiro, mas não retorna nada.
+
+2.
+Script started on 2023-04-08 13:06:37-03:00 [TERM="xterm-256color" TTY="/dev/pts/3" COLUMNS="165" LINES="13"]
+
+]0;rafaelmg@DESKTOP-R55VT5A: ~/Documents/ED/pa03[01;32mrafaelmg@DESKTOP-R55VT5A[00m:[01;34m~/Documents/ED/pa03[00m$ valgrind --leak-check=full ./c14
+==16968== Memcheck, a memory error detector
+==16968== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==16968== Using Valgrind-3.15.0 and LibVEX; rerun with -h for copyright info
+==16968== Command: ./c14
+==16968== 
+Positive integer:5
+==16968== Conditional jump or move depends on uninitialised value(s)
+==16968==    at 0x48D2958: __vfprintf_internal (vfprintf-internal.c:1687)
+==16968==    by 0x48BCD3E: printf (printf.c:33)
+==16968==    by 0x109204: main (c14.c:12)
+==16968== 
+==16968== Use of uninitialised value of size 8
+==16968==    at 0x48B669B: _itoa_word (_itoa.c:179)
+==16968==    by 0x48D2574: __vfprintf_internal (vfprintf-internal.c:1687)
+==16968==    by 0x48BCD3E: printf (printf.c:33)
+==16968==    by 0x109204: main (c14.c:12)
+==16968== 
+==16968== Conditional jump or move depends on uninitialised value(s)
+==16968==    at 0x48B66AD: _itoa_word (_itoa.c:179)
+==16968==    by 0x48D2574: __vfprintf_internal (vfprintf-internal.c:1687)
+==16968==    by 0x48BCD3E: printf (printf.c:33)
+==16968==    by 0x109204: main (c14.c:12)
+==16968== 
+==16968== Conditional jump or move depends on uninitialised value(s)
+==16968==    at 0x48D3228: __vfprintf_internal (vfprintf-internal.c:1687)
+==16968==    by 0x48BCD3E: printf (printf.c:33)
+==16968==    by 0x109204: main (c14.c:12)
+==16968== 
+==16968== Conditional jump or move depends on uninitialised value(s)
+==16968==    at 0x48D26EE: __vfprintf_internal (vfprintf-internal.c:1687)
+==16968==    by 0x48BCD3E: printf (printf.c:33)
+==16968==    by 0x109204: main (c14.c:12)
+==16968== 
+Factorial 5 = 3720
+==16968== 
+==16968== HEAP SUMMARY:
+==16968==     in use at exit: 0 bytes in 0 blocks
+==16968==   total heap usage: 2 allocs, 2 frees, 2,048 bytes allocated
+==16968== 
+==16968== All heap blocks were freed -- no leaks are possible
+==16968== 
+==16968== Use --track-origins=yes to see where uninitialised values come from
+==16968== For lists of detected and suppressed errors, rerun with: -s
+==16968== ERROR SUMMARY: 11 errors from 5 contexts (suppressed: 0 from 0)
+]0;rafaelmg@DESKTOP-R55VT5A: ~/Documents/ED/pa03[01;32mrafaelmg@DESKTOP-R55VT5A[00m:[01;34m~/Documents/ED/pa03[00m$ exit
+exit
+
+Script done on 2023-04-08 13:06:51-03:00 [COMMAND_EXIT_CODE="0"]
+
+3. Para solucionar o erro, inicializei as varíaveis ('n' e 'i' com 0 e, o principal, 'fact' com 1), e modifiquei a função 'main' para que ela retorne 0.
+
+4.
+Script started on 2023-04-08 13:08:15-03:00 [TERM="xterm-256color" TTY="/dev/pts/3" COLUMNS="165" LINES="13"]
+
+]0;rafaelmg@DESKTOP-R55VT5A: ~/Documents/ED/pa03[01;32mrafaelmg@DESKTOP-R55VT5A[00m:[01;34m~/Documents/ED/pa03[00m$ valgrind --leak-check=full ./c14
+==17424== Memcheck, a memory error detector
+==17424== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==17424== Using Valgrind-3.15.0 and LibVEX; rerun with -h for copyright info
+==17424== Command: ./c14
+==17424== 
+Positive integer:5
+Factorial 5 = 120
+==17424== 
+==17424== HEAP SUMMARY:
+==17424==     in use at exit: 0 bytes in 0 blocks
+==17424==   total heap usage: 2 allocs, 2 frees, 2,048 bytes allocated
+==17424== 
+==17424== All heap blocks were freed -- no leaks are possible
+==17424== 
+==17424== For lists of detected and suppressed errors, rerun with: -s
+==17424== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+]0;rafaelmg@DESKTOP-R55VT5A: ~/Documents/ED/pa03[01;32mrafaelmg@DESKTOP-R55VT5A[00m:[01;34m~/Documents/ED/pa03[00m$ exit
+exit
+
+Script done on 2023-04-08 13:08:26-03:00 [COMMAND_EXIT_CODE="0"]

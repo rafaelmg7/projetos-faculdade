@@ -1,0 +1,16 @@
+pedido
+pizza
+Calabresa,4,1,2,40
+pizza
+Frango com catupity,6,0,1,55.90
+hamburguer
+X-tudo,1,2,25
+endereco
+Av. Pres. Antonio Carlos, 6627 - Pampulha, Belo Horizonte - MG
+pedido
+hamburguer
+X-salada,0,4,15
+japonesa
+Combo 1,4,5,6,1,70
+endereco
+Rua Reitor Pires Albuquerque, ICEx - Pampulha, Belo Horizonte - MG

@@ -1,0 +1,96 @@
+c7.c - Relatório
+
+
+Aluno: Rafael Martins Gomes
+
+
+1. O vetor de caracteres 'alphabet' tem tamanho 26. Depois de popular o vetor com caracteres de A a Z (construindo a string 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'), as 26 posições do vetor estão ocupadas, e não sobra espaço para o caracter '\0', que indica o fim da string. Assim, é provavel que, na linha 10, quando tenta-se colocar o caracter '\0' no índice 26 do vetor (que, como começa em 0 e tem tamanho 26, vai até o índice 25), ocorra um erro.
+
+2.
+Script started on 2023-04-07 19:26:56-03:00 [TERM="xterm-256color" TTY="/dev/pts/3" COLUMNS="165" LINES="13"]
+
+]0;rafaelmg@DESKTOP-R55VT5A: ~/Documents/ED/pa03[01;32mrafaelmg@DESKTOP-R55VT5A[00m:[01;34m~/Documents/ED/pa03[00m$ gdb c7
+[35;1m[35;1mGNU gdb [m[35;1m(Ubuntu 9.2-0ubuntu1~20.04.1) [m[35;1m9.2[m[35;1m
+[m[mCopyright (C) 2020 Free Software Foundation, Inc.
+License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.
+Type "show copying" and "show warranty" for details.
+This GDB was configured as "x86_64-linux-gnu".
+Type "show configuration" for configuration details.
+For bug reporting instructions, please see:
+<http://www.gnu.org/software/gdb/bugs/>.
+Find the GDB manual and other documentation resources online at:
+    <http://www.gnu.org/software/gdb/documentation/>.
+[m--Type <RET> for more, q to quit, c to continue without paging--
+
+For help, type "help".
+Type "apropos word" to search for commands related to "word"...
+Reading symbols from [32mc7[m...
+(gdb) break c7.c:10
+Breakpoint 1 at [34m0x11b4[m: file [32mc7.c[m, line 10.
+(gdb) run
+Starting program: /home/rafaelmg/Documents/ED/pa03/c7 
+
+Breakpoint 1, [33mmain[m () at [32mc7.c[m:10
+10	    *(alphabet + 26) = '\0'; //null-terminate the string?
+(gdb) print alphabet
+$1 = [34m0x5555555592a0[m "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+(gdb) next
+12	    free(alphabet);
+(gdb) print alphabet
+$2 = [34m0x5555555592a0[m "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+(gdb) continue
+Continuing.
+[Inferior 1 (process 7711) exited normally]
+(gdb) quit
+]0;rafaelmg@DESKTOP-R55VT5A: ~/Documents/ED/pa03[01;32mrafaelmg@DESKTOP-R55VT5A[00m:[01;34m~/Documents/ED/pa03[00m$ valgrind --leak-check=full ./c7
+==7862== Memcheck, a memory error detector
+==7862== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==7862== Using Valgrind-3.15.0 and LibVEX; rerun with -h for copyright info
+==7862== Command: ./c7
+==7862== 
+==7862== Invalid write of size 1
+==7862==    at 0x1091BC: main (c7.c:10)
+==7862==  Address 0x4a5005a is 0 bytes after a block of size 26 alloc'd
+==7862==    at 0x483DD99: calloc (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_memcheck-amd64-linux.so)
+==7862==    by 0x109183: main (c7.c:5)
+==7862== 
+==7862== 
+==7862== HEAP SUMMARY:
+==7862==     in use at exit: 0 bytes in 0 blocks
+==7862==   total heap usage: 1 allocs, 1 frees, 26 bytes allocated
+==7862== 
+==7862== All heap blocks were freed -- no leaks are possible
+==7862== 
+==7862== For lists of detected and suppressed errors, rerun with: -s
+==7862== ERROR SUMMARY: 1 errors from 1 contexts (suppressed: 0 from 0)
+]0;rafaelmg@DESKTOP-R55VT5A: ~/Documents/ED/pa03[01;32mrafaelmg@DESKTOP-R55VT5A[00m:[01;34m~/Documents/ED/pa03[00m$ ei[Kxit
+exit
+
+Script done on 2023-04-07 19:27:43-03:00 [COMMAND_EXIT_CODE="0"]
+
+3. Para corrigir o código, aumentei o tamanho do vetor de caracteres de 26 para 27.
+
+4.
+Script started on 2023-04-07 19:29:01-03:00 [TERM="xterm-256color" TTY="/dev/pts/3" COLUMNS="165" LINES="13"]
+
+]0;rafaelmg@DESKTOP-R55VT5A: ~/Documents/ED/pa03[01;32mrafaelmg@DESKTOP-R55VT5A[00m:[01;34m~/Documents/ED/pa03[00m$ valgrind --leak-check=full c[K./c7
+==8042== Memcheck, a memory error detector
+==8042== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==8042== Using Valgrind-3.15.0 and LibVEX; rerun with -h for copyright info
+==8042== Command: ./c7
+==8042== 
+==8042== 
+==8042== HEAP SUMMARY:
+==8042==     in use at exit: 0 bytes in 0 blocks
+==8042==   total heap usage: 1 allocs, 1 frees, 27 bytes allocated
+==8042== 
+==8042== All heap blocks were freed -- no leaks are possible
+==8042== 
+==8042== For lists of detected and suppressed errors, rerun with: -s
+==8042== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+]0;rafaelmg@DESKTOP-R55VT5A: ~/Documents/ED/pa03[01;32mrafaelmg@DESKTOP-R55VT5A[00m:[01;34m~/Documents/ED/pa03[00m$ exit
+exit
+
+Script done on 2023-04-07 19:29:14-03:00 [COMMAND_EXIT_CODE="0"]

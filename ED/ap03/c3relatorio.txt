@@ -1,0 +1,64 @@
+c3.c - Relatório
+
+
+Aluno: Rafael Martins Gomes
+
+
+1. Em primeira análise, vi algo estranho: Um loop 'for' é usado para alocar um bloco de 100 bytes para o vetor int *a 10 vezes. Apesar disso, não imaginei que um uso indevido da memória estivesse sendo feito, pois a presença de um 'free(a)' no final do programa me fez imaginar que a memória alocada seria desalocada ali.
+
+2. 
+Script started on 2023-04-07 17:05:00-03:00 [TERM="xterm-256color" TTY="/dev/pts/3" COLUMNS="165" LINES="13"]
+
+]0;rafaelmg@DESKTOP-R55VT5A: ~/Documents/ED/pa03[01;32mrafaelmg@DESKTOP-R55VT5A[00m:[01;34m~/Documents/ED/pa03[00m$ valgrind --leak-check=full ./c3
+==3029== Memcheck, a memory error detector
+==3029== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==3029== Using Valgrind-3.15.0 and LibVEX; rerun with -h for copyright info
+==3029== Command: ./c3
+==3029== 
+==3029== 
+==3029== HEAP SUMMARY:
+==3029==     in use at exit: 3,600 bytes in 9 blocks
+==3029==   total heap usage: 10 allocs, 1 frees, 4,000 bytes allocated
+==3029== 
+==3029== 3,600 bytes in 9 blocks are definitely lost in loss record 1 of 1
+==3029==    at 0x483B7F3: malloc (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3029==    by 0x10918E: main (c3.c:9)
+==3029== 
+==3029== LEAK SUMMARY:
+==3029==    definitely lost: 3,600 bytes in 9 blocks
+==3029==    indirectly lost: 0 bytes in 0 blocks
+==3029==      possibly lost: 0 bytes in 0 blocks
+==3029==    still reachable: 0 bytes in 0 blocks
+==3029==         suppressed: 0 bytes in 0 blocks
+==3029== 
+==3029== For lists of detected and suppressed errors, rerun with: -s
+==3029== ERROR SUMMARY: 1 errors from 1 contexts (suppressed: 0 from 0)
+]0;rafaelmg@DESKTOP-R55VT5A: ~/Documents/ED/pa03[01;32mrafaelmg@DESKTOP-R55VT5A[00m:[01;34m~/Documents/ED/pa03[00m$ exit
+exit
+
+Script done on 2023-04-07 17:05:12-03:00 [COMMAND_EXIT_CODE="0"]
+
+3. Para corrigir o erro (o free(a) desalocava apenas 1 dos 10 blocos alocados e, assim, restaram 9 blocos de 100 inteiros (400 bytes por bloco) para serem desalocados), coloquei o free(a) dentro do loop que aloca a memória para int *a. Assim, não houve mais vazamentos de memória no programa.
+
+4.
+Script started on 2023-04-07 17:17:02-03:00 [TERM="xterm-256color" TTY="/dev/pts/3" COLUMNS="165" LINES="13"]
+
+]0;rafaelmg@DESKTOP-R55VT5A: ~/Documents/ED/pa03[01;32mrafaelmg@DESKTOP-R55VT5A[00m:[01;34m~/Documents/ED/pa03[00m$ valgrind --leak-check=full ./c3
+==3605== Memcheck, a memory error detector
+==3605== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==3605== Using Valgrind-3.15.0 and LibVEX; rerun with -h for copyright info
+==3605== Command: ./c3
+==3605== 
+==3605== 
+==3605== HEAP SUMMARY:
+==3605==     in use at exit: 0 bytes in 0 blocks
+==3605==   total heap usage: 10 allocs, 10 frees, 4,000 bytes allocated
+==3605== 
+==3605== All heap blocks were freed -- no leaks are possible
+==3605== 
+==3605== For lists of detected and suppressed errors, rerun with: -s
+==3605== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+]0;rafaelmg@DESKTOP-R55VT5A: ~/Documents/ED/pa03[01;32mrafaelmg@DESKTOP-R55VT5A[00m:[01;34m~/Documents/ED/pa03[00m$ exit
+exit
+
+Script done on 2023-04-07 17:17:13-03:00 [COMMAND_EXIT_CODE="0"]

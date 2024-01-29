@@ -1,0 +1,86 @@
+c2.c - Relatório
+
+
+Aluno: Rafael Martins Gomes
+
+
+1. É possível observar que, no loop que se inicia na linha 10, onde os valores do vetor int a[10] são impressos, a décima posição do vetor, que não foi inicializada anteriormente (pois o loop anterior, que inicializa o vetor, vai até a nona posição), é indevidamente acessada.
+
+2.
+Script started on 2023-04-07 16:53:31-03:00 [TERM="xterm-256color" TTY="/dev/pts/3" COLUMNS="165" LINES="13"]
+
+]0;rafaelmg@DESKTOP-R55VT5A: ~/Documents/ED/pa03[01;32mrafaelmg@DESKTOP-R55VT5A[00m:[01;34m~/Documents/ED/pa03[00m$ gcc c2.c -o c2 -g
+]0;rafaelmg@DESKTOP-R55VT5A: ~/Documents/ED/pa03[01;32mrafaelmg@DESKTOP-R55VT5A[00m:[01;34m~/Documents/ED/pa03[00m$ valf[Kgrind --leak-check=full ./c2
+==2423== Memcheck, a memory error detector
+==2423== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==2423== Using Valgrind-3.15.0 and LibVEX; rerun with -h for copyright info
+==2423== Command: ./c2
+==2423== 
+==2423== Conditional jump or move depends on uninitialised value(s)
+==2423==    at 0x48D2958: __vfprintf_internal (vfprintf-internal.c:1687)
+==2423==    by 0x48BCD3E: printf (printf.c:33)
+==2423==    by 0x1091EE: main (c2.c:11)
+==2423== 
+==2423== Use of uninitialised value of size 8
+==2423==    at 0x48B669B: _itoa_word (_itoa.c:179)
+==2423==    by 0x48D2574: __vfprintf_internal (vfprintf-internal.c:1687)
+==2423==    by 0x48BCD3E: printf (printf.c:33)
+==2423==    by 0x1091EE: main (c2.c:11)
+==2423== 
+==2423== Conditional jump or move depends on uninitialised value(s)
+==2423==    at 0x48B66AD: _itoa_word (_itoa.c:179)
+==2423==    by 0x48D2574: __vfprintf_internal (vfprintf-internal.c:1687)
+==2423==    by 0x48BCD3E: printf (printf.c:33)
+==2423==    by 0x1091EE: main (c2.c:11)
+==2423== 
+==2423== Conditional jump or move depends on uninitialised value(s)
+==2423==    at 0x48D3228: __vfprintf_internal (vfprintf-internal.c:1687)
+==2423==    by 0x48BCD3E: printf (printf.c:33)
+==2423==    by 0x1091EE: main (c2.c:11)
+==2423== 
+==2423== Conditional jump or move depends on uninitialised value(s)
+==2423==    at 0x48D26EE: __vfprintf_internal (vfprintf-internal.c:1687)
+==2423==    by 0x48BCD3E: printf (printf.c:33)
+==2423==    by 0x1091EE: main (c2.c:11)
+==2423== 
+0 1 2 3 4 5 6 7 8 31 
+==2423== 
+==2423== HEAP SUMMARY:
+==2423==     in use at exit: 0 bytes in 0 blocks
+==2423==   total heap usage: 1 allocs, 1 frees, 1,024 bytes allocated
+==2423== 
+==2423== All heap blocks were freed -- no leaks are possible
+==2423== 
+==2423== Use --track-origins=yes to see where uninitialised values come from
+==2423== For lists of detected and suppressed errors, rerun with: -s
+==2423== ERROR SUMMARY: 7 errors from 5 contexts (suppressed: 0 from 0)
+]0;rafaelmg@DESKTOP-R55VT5A: ~/Documents/ED/pa03[01;32mrafaelmg@DESKTOP-R55VT5A[00m:[01;34m~/Documents/ED/pa03[00m$ exit
+exit
+
+Script done on 2023-04-07 16:53:56-03:00 [COMMAND_EXIT_CODE="0"]
+
+3. Para corrigir o código, apenas ajustei o range do loop de impressão, que antes começava em i = 0 e ia até i < 10, para ir até i < 9.
+
+4.
+Script started on 2023-04-07 16:57:10-03:00 [TERM="xterm-256color" TTY="/dev/pts/3" COLUMNS="165" LINES="13"]
+
+]0;rafaelmg@DESKTOP-R55VT5A: ~/Documents/ED/pa03[01;32mrafaelmg@DESKTOP-R55VT5A[00m:[01;34m~/Documents/ED/pa03[00m$ valgrind --leak-check=full ./c2
+==2636== Memcheck, a memory error detector
+==2636== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==2636== Using Valgrind-3.15.0 and LibVEX; rerun with -h for copyright info
+==2636== Command: ./c2
+==2636== 
+0 1 2 3 4 5 6 7 8 
+==2636== 
+==2636== HEAP SUMMARY:
+==2636==     in use at exit: 0 bytes in 0 blocks
+==2636==   total heap usage: 1 allocs, 1 frees, 1,024 bytes allocated
+==2636== 
+==2636== All heap blocks were freed -- no leaks are possible
+==2636== 
+==2636== For lists of detected and suppressed errors, rerun with: -s
+==2636== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+]0;rafaelmg@DESKTOP-R55VT5A: ~/Documents/ED/pa03[01;32mrafaelmg@DESKTOP-R55VT5A[00m:[01;34m~/Documents/ED/pa03[00m$ ei[Kxit
+exit
+
+Script done on 2023-04-07 16:57:24-03:00 [COMMAND_EXIT_CODE="0"]

@@ -1,0 +1,130 @@
+c4.c - Relatório
+
+
+Aluno: Rafael Martins Gomes
+
+
+1. No programa, um ponteiro para char (char * text) é declarado, mas não é inicializado ou alocado e, ainda assim, um free(text) é utilizado. É declarado também um ponteiro para um Matrix (tipo abstrato declarado anteriormente por meio de uma struct), mas a memória não é alocada. Além disso, ao liberar a memória por meio da função free(), as linhas da matriz não são desalocadas. Essas duas falhas devem gerar erros de gerenciamento de memória.
+
+2.
+Script started on 2023-04-07 17:37:52-03:00 [TERM="xterm-256color" TTY="/dev/pts/3" COLUMNS="165" LINES="13"]
+
+]0;rafaelmg@DESKTOP-R55VT5A: ~/Documents/ED/pa03[01;32mrafaelmg@DESKTOP-R55VT5A[00m:[01;34m~/Documents/ED/pa03[00m$ gcc c4.c -o c4 -g
+]0;rafaelmg@DESKTOP-R55VT5A: ~/Documents/ED/pa03[01;32mrafaelmg@DESKTOP-R55VT5A[00m:[01;34m~/Documents/ED/pa03[00m$ gdb c4
+[35;1m[35;1mGNU gdb [m[35;1m(Ubuntu 9.2-0ubuntu1~20.04.1) [m[35;1m9.2[m[35;1m
+[m[mCopyright (C) 2020 Free Software Foundation, Inc.
+License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.
+Type "show copying" and "show warranty" for details.
+This GDB was configured as "x86_64-linux-gnu".
+Type "show configuration" for configuration details.
+For bug reporting instructions, please see:
+<http://www.gnu.org/software/gdb/bugs/>.
+Find the GDB manual and other documentation resources online at:
+    <http://www.gnu.org/software/gdb/documentation/>.
+[m--Type <RET> for more, q to quit, c to continue without paging--
+
+For help, type "help".
+Type "apropos word" to search for commands related to "word"...
+Reading symbols from [32mc4[m...
+(gdb) run
+Starting program: /home/rafaelmg/Documents/ED/pa03/c4 
+
+Program received signal SIGSEGV, Segmentation fault.
+[34m0x000055555555517a[m in [33mmain[m () at [32mc4.c[m:13
+13	rotation3D->rows=4;
+(gdb) continue
+Continuing.
+
+Program terminated with signal SIGSEGV, Segmentation fault.
+The program no longer exists.
+(gdb) quit
+]0;rafaelmg@DESKTOP-R55VT5A: ~/Documents/ED/pa03[01;32mrafaelmg@DESKTOP-R55VT5A[00m:[01;34m~/Documents/ED/pa03[00m$ valgrind --leak-check=full ./c4
+==4253== Memcheck, a memory error detector
+==4253== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==4253== Using Valgrind-3.15.0 and LibVEX; rerun with -h for copyright info
+==4253== Command: ./c4
+==4253== 
+==4253== Use of uninitialised value of size 8
+==4253==    at 0x10917A: main (c4.c:13)
+==4253== 
+==4253== Invalid write of size 4
+==4253==    at 0x10917A: main (c4.c:13)
+==4253==  Address 0x0 is not stack'd, malloc'd or (recently) free'd
+==4253== 
+==4253== 
+==4253== Process terminating with default action of signal 11 (SIGSEGV)
+==4253==  Access not within mapped region at address 0x0
+==4253==    at 0x10917A: main (c4.c:13)
+==4253==  If you believe this happened as a result of a stack
+==4253==  overflow in your program's main thread (unlikely but
+==4253==  possible), you can try to increase the size of the
+==4253==  main thread stack using the --main-stacksize= flag.
+==4253==  The main thread stack size used in this run was 8388608.
+==4253== 
+==4253== HEAP SUMMARY:
+==4253==     in use at exit: 0 bytes in 0 blocks
+==4253==   total heap usage: 0 allocs, 0 frees, 0 bytes allocated
+==4253== 
+==4253== All heap blocks were freed -- no leaks are possible
+==4253== 
+==4253== Use --track-origins=yes to see where uninitialised values come from
+==4253== For lists of detected and suppressed errors, rerun with: -s
+==4253== ERROR SUMMARY: 2 errors from 2 contexts (suppressed: 0 from 0)
+Segmentation fault
+]0;rafaelmg@DESKTOP-R55VT5A: ~/Documents/ED/pa03[01;32mrafaelmg@DESKTOP-R55VT5A[00m:[01;34m~/Documents/ED/pa03[00m$ exit
+exit
+
+Script done on 2023-04-07 17:38:29-03:00 [COMMAND_EXIT_CODE="139"]
+
+3. Para resolver o erro:
+    1- Aloquei espaço na memória para 'char * text';
+    2- Aloquei espaço na memória para 'struct Matrix* rotation3d';
+    3- Utilizando um loop 'for', liberei a memória alocada para as linhas da matriz.
+
+4.
+Script started on 2023-04-07 17:48:10-03:00 [TERM="xterm-256color" TTY="/dev/pts/3" COLUMNS="165" LINES="13"]
+
+]0;rafaelmg@DESKTOP-R55VT5A: ~/Documents/ED/pa03[01;32mrafaelmg@DESKTOP-R55VT5A[00m:[01;34m~/Documents/ED/pa03[00m$ gcc c4.c -o c4 -g
+]0;rafaelmg@DESKTOP-R55VT5A: ~/Documents/ED/pa03[01;32mrafaelmg@DESKTOP-R55VT5A[00m:[01;34m~/Documents/ED/pa03[00m$ gdb c4
+[35;1m[35;1mGNU gdb [m[35;1m(Ubuntu 9.2-0ubuntu1~20.04.1) [m[35;1m9.2[m[35;1m
+[m[mCopyright (C) 2020 Free Software Foundation, Inc.
+License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.
+Type "show copying" and "show warranty" for details.
+This GDB was configured as "x86_64-linux-gnu".
+Type "show configuration" for configuration details.
+For bug reporting instructions, please see:
+<http://www.gnu.org/software/gdb/bugs/>.
+Find the GDB manual and other documentation resources online at:
+    <http://www.gnu.org/software/gdb/documentation/>.
+[m--Type <RET> for more, q to quit, c to continue without paging--
+
+For help, type "help".
+Type "apropos word" to search for commands related to "word"...
+Reading symbols from [32mc4[m...
+(gdb) run
+Starting program: /home/rafaelmg/Documents/ED/pa03/c4 
+[Inferior 1 (process 4737) exited normally]
+(gdb) quit
+]0;rafaelmg@DESKTOP-R55VT5A: ~/Documents/ED/pa03[01;32mrafaelmg@DESKTOP-R55VT5A[00m:[01;34m~/Documents/ED/pa03[00m$ valgrind --leak-check=u[Kfulk[Kl ./c4
+==4795== Memcheck, a memory error detector
+==4795== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==4795== Using Valgrind-3.15.0 and LibVEX; rerun with -h for copyright info
+==4795== Command: ./c4
+==4795== 
+==4795== 
+==4795== HEAP SUMMARY:
+==4795==     in use at exit: 0 bytes in 0 blocks
+==4795==   total heap usage: 7 allocs, 7 frees, 113 bytes allocated
+==4795== 
+==4795== All heap blocks were freed -- no leaks are possible
+==4795== 
+==4795== For lists of detected and suppressed errors, rerun with: -s
+==4795== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+]0;rafaelmg@DESKTOP-R55VT5A: ~/Documents/ED/pa03[01;32mrafaelmg@DESKTOP-R55VT5A[00m:[01;34m~/Documents/ED/pa03[00m$ exit
+exit
+
+Script done on 2023-04-07 17:48:37-03:00 [COMMAND_EXIT_CODE="0"]

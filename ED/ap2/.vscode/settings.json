@@ -1,0 +1,10 @@
+{
+    "files.associations": {
+        "stdlib.h": "c",
+        "time.h": "c",
+        "math.h": "c",
+        "stdio.h": "c",
+        "fibonacci.h": "c",
+        "fatorial.h": "c"
+    }
+}

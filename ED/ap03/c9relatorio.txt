@@ -1,0 +1,73 @@
+c9.c - Relatório
+
+
+Aluno: Rafael Martins Gomes
+
+
+1. É possível ver que, na função 'void f(void)', tenta-se acessar uma posição da memória que não foi alocada. Um bloco de 10 inteiros foi alocado para o vetor 'int* x', que, assim, vai do índice 0 ao índice 9. Logo, ao tentar-se acessar a décima primeira posição do vetor (índice 10 - x[10]), tal ação configurará um acesso indevido da memória. Além disso, o vetor de inteiros 'x' é alocado dinamicamente, mas a memória não é desalocada.
+
+2.
+Script started on 2023-04-08 11:20:05-03:00 [TERM="xterm-256color" TTY="/dev/pts/3" COLUMNS="165" LINES="13"]
+
+]0;rafaelmg@DESKTOP-R55VT5A: ~/Documents/ED/pa03[01;32mrafaelmg@DESKTOP-R55VT5A[00m:[01;34m~/Documents/ED/pa03[00m$ valgrind --leak-checlk[K[Kk=full ./c9
+==26207== Memcheck, a memory error detector
+==26207== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==26207== Using Valgrind-3.15.0 and LibVEX; rerun with -h for copyright info
+==26207== Command: ./c9
+==26207== 
+==26207== Invalid write of size 4
+==26207==    at 0x10916B: f (c9.c:6)
+==26207==    by 0x109180: main (c9.c:11)
+==26207==  Address 0x4a50068 is 0 bytes after a block of size 40 alloc'd
+==26207==    at 0x483B7F3: malloc (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_memcheck-amd64-linux.so)
+==26207==    by 0x10915E: f (c9.c:5)
+==26207==    by 0x109180: main (c9.c:11)
+==26207== 
+==26207== 
+==26207== HEAP SUMMARY:
+==26207==     in use at exit: 40 bytes in 1 blocks
+==26207==   total heap usage: 1 allocs, 0 frees, 40 bytes allocated
+==26207== 
+==26207== 40 bytes in 1 blocks are definitely lost in loss record 1 of 1
+==26207==    at 0x483B7F3: malloc (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_memcheck-amd64-linux.so)
+==26207==    by 0x10915E: f (c9.c:5)
+==26207==    by 0x109180: main (c9.c:11)
+==26207== 
+==26207== LEAK SUMMARY:
+==26207==    definitely lost: 40 bytes in 1 blocks
+==26207==    indirectly lost: 0 bytes in 0 blocks
+==26207==      possibly lost: 0 bytes in 0 blocks
+==26207==    still reachable: 0 bytes in 0 blocks
+==26207==         suppressed: 0 bytes in 0 blocks
+==26207== 
+==26207== For lists of detected and suppressed errors, rerun with: -s
+==26207== ERROR SUMMARY: 2 errors from 2 contexts (suppressed: 0 from 0)
+]0;rafaelmg@DESKTOP-R55VT5A: ~/Documents/ED/pa03[01;32mrafaelmg@DESKTOP-R55VT5A[00m:[01;34m~/Documents/ED/pa03[00m$ exit
+exit
+
+Script done on 2023-04-08 11:20:20-03:00 [COMMAND_EXIT_CODE="0"]
+
+3. Para corrigir o erro, aumentei o tamanho do vetor para que comporte 11 inteiros e desaloquei a memória inserindo um 'free(x)' dentro da função.
+
+4.
+Script started on 2023-04-08 11:22:08-03:00 [TERM="xterm-256color" TTY="/dev/pts/3" COLUMNS="165" LINES="13"]
+
+]0;rafaelmg@DESKTOP-R55VT5A: ~/Documents/ED/pa03[01;32mrafaelmg@DESKTOP-R55VT5A[00m:[01;34m~/Documents/ED/pa03[00m$ valgrind --leak-check=full ./c9
+==26776== Memcheck, a memory error detector
+==26776== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==26776== Using Valgrind-3.15.0 and LibVEX; rerun with -h for copyright info
+==26776== Command: ./c9
+==26776== 
+==26776== 
+==26776== HEAP SUMMARY:
+==26776==     in use at exit: 0 bytes in 0 blocks
+==26776==   total heap usage: 1 allocs, 1 frees, 44 bytes allocated
+==26776== 
+==26776== All heap blocks were freed -- no leaks are possible
+==26776== 
+==26776== For lists of detected and suppressed errors, rerun with: -s
+==26776== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+]0;rafaelmg@DESKTOP-R55VT5A: ~/Documents/ED/pa03[01;32mrafaelmg@DESKTOP-R55VT5A[00m:[01;34m~/Documents/ED/pa03[00m$ exit
+exit
+
+Script done on 2023-04-08 11:22:22-03:00 [COMMAND_EXIT_CODE="0"]

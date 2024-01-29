@@ -1,0 +1,102 @@
+c11.c - Relatório
+
+
+Aluno: Rafael Martins Gomes
+
+
+1. O vetor de caracteres 'char* msg' tem espaço para 8 caracteres no total (7 caracteres a serem usados e um para o '\0'). No entanto, uma string de 10 caracteres (contando com o '\0') é atribuída a 'msg' e impressa, o que configura um acesso indevido da memória. Além disso, a memória alocada não é liberada.
+
+2.
+Script started on 2023-04-08 12:13:34-03:00 [TERM="xterm-256color" TTY="/dev/pts/3" COLUMNS="165" LINES="13"]
+
+]0;rafaelmg@DESKTOP-R55VT5A: ~/Documents/ED/pa03[01;32mrafaelmg@DESKTOP-R55VT5A[00m:[01;34m~/Documents/ED/pa03[00m$ valgrind --leak-check=full ./c11
+==5513== Memcheck, a memory error detector
+==5513== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==5513== Using Valgrind-3.15.0 and LibVEX; rerun with -h for copyright info
+==5513== Command: ./c11
+==5513== 
+==5513== Invalid write of size 2
+==5513==    at 0x1091B4: main (c11.c:9)
+==5513==  Address 0x4a50048 is 0 bytes after a block of size 8 alloc'd
+==5513==    at 0x483B7F3: malloc (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5513==    by 0x10919E: main (c11.c:8)
+==5513== 
+==5513== Invalid read of size 1
+==5513==    at 0x483EF54: strlen (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5513==    by 0x48D3D14: __vfprintf_internal (vfprintf-internal.c:1688)
+==5513==    by 0x48BCD3E: printf (printf.c:33)
+==5513==    by 0x1091DF: main (c11.c:11)
+==5513==  Address 0x4a50048 is 0 bytes after a block of size 8 alloc'd
+==5513==    at 0x483B7F3: malloc (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5513==    by 0x10919E: main (c11.c:8)
+==5513== 
+==5513== Invalid read of size 1
+==5513==    at 0x48EA70C: _IO_new_file_xsputn (fileops.c:1219)
+==5513==    by 0x48EA70C: _IO_file_xsputn@@GLIBC_2.2.5 (fileops.c:1197)
+==5513==    by 0x48D20FB: __vfprintf_internal (vfprintf-internal.c:1688)
+==5513==    by 0x48BCD3E: printf (printf.c:33)
+==5513==    by 0x1091DF: main (c11.c:11)
+==5513==  Address 0x4a50048 is 0 bytes after a block of size 8 alloc'd
+==5513==    at 0x483B7F3: malloc (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5513==    by 0x10919E: main (c11.c:8)
+==5513== 
+==5513== Invalid read of size 1
+==5513==    at 0x48436A0: mempcpy (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5513==    by 0x48EA631: _IO_new_file_xsputn (fileops.c:1236)
+==5513==    by 0x48EA631: _IO_file_xsputn@@GLIBC_2.2.5 (fileops.c:1197)
+==5513==    by 0x48D20FB: __vfprintf_internal (vfprintf-internal.c:1688)
+==5513==    by 0x48BCD3E: printf (printf.c:33)
+==5513==    by 0x1091DF: main (c11.c:11)
+==5513==  Address 0x4a50048 is 0 bytes after a block of size 8 alloc'd
+==5513==    at 0x483B7F3: malloc (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5513==    by 0x10919E: main (c11.c:8)
+==5513== 
+5513, Rolberton
+==5513== 
+==5513== HEAP SUMMARY:
+==5513==     in use at exit: 8 bytes in 1 blocks
+==5513==   total heap usage: 2 allocs, 1 frees, 1,032 bytes allocated
+==5513== 
+==5513== 8 bytes in 1 blocks are definitely lost in loss record 1 of 1
+==5513==    at 0x483B7F3: malloc (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5513==    by 0x10919E: main (c11.c:8)
+==5513== 
+==5513== LEAK SUMMARY:
+==5513==    definitely lost: 8 bytes in 1 blocks
+==5513==    indirectly lost: 0 bytes in 0 blocks
+==5513==      possibly lost: 0 bytes in 0 blocks
+==5513==    still reachable: 0 bytes in 0 blocks
+==5513==         suppressed: 0 bytes in 0 blocks
+==5513== 
+==5513== For lists of detected and suppressed errors, rerun with: -s
+==5513== ERROR SUMMARY: 7 errors from 5 contexts (suppressed: 0 from 0)
+]0;rafaelmg@DESKTOP-R55VT5A: ~/Documents/ED/pa03[01;32mrafaelmg@DESKTOP-R55VT5A[00m:[01;34m~/Documents/ED/pa03[00m$ exit
+exit
+
+Script done on 2023-04-08 12:13:42-03:00 [COMMAND_EXIT_CODE="0"]
+
+3. Para corrigir o erro, aumentei o tamanho da string de 8 para 10 e inseri um 'free(msg)' ao final do programa.
+
+4.
+Script started on 2023-04-08 12:16:54-03:00 [TERM="xterm-256color" TTY="/dev/pts/3" COLUMNS="165" LINES="13"]
+
+]0;rafaelmg@DESKTOP-R55VT5A: ~/Documents/ED/pa03[01;32mrafaelmg@DESKTOP-R55VT5A[00m:[01;34m~/Documents/ED/pa03[00m$ valgrind --leak-check=full ./c11
+==6389== Memcheck, a memory error detector
+==6389== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==6389== Using Valgrind-3.15.0 and LibVEX; rerun with -h for copyright info
+==6389== Command: ./c11
+==6389== 
+6389, Rolberton
+==6389== 
+==6389== HEAP SUMMARY:
+==6389==     in use at exit: 0 bytes in 0 blocks
+==6389==   total heap usage: 2 allocs, 2 frees, 1,034 bytes allocated
+==6389== 
+==6389== All heap blocks were freed -- no leaks are possible
+==6389== 
+==6389== For lists of detected and suppressed errors, rerun with: -s
+==6389== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+]0;rafaelmg@DESKTOP-R55VT5A: ~/Documents/ED/pa03[01;32mrafaelmg@DESKTOP-R55VT5A[00m:[01;34m~/Documents/ED/pa03[00m$ exit
+exit
+
+Script done on 2023-04-08 12:17:04-03:00 [COMMAND_EXIT_CODE="0"]

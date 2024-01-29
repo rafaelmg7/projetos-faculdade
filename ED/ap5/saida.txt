@@ -1,0 +1,30 @@
+   0 (0)
+       1 (1)
+           2 (2)
+               3 (3)
+               4 (3)
+                   5 (4)
+                   6 (4)
+           7 (2)
+       8 (1)
+           9 (2)
+0 testando ancestral(5,2)
+Não é ancestral
+1 testando ancestral(7,8)
+Não é ancestral
+2 testando ancestral(0,4)
+É ancestral
+3 testando ancestral(6,8)
+Não é ancestral
+4 testando ancestral(1,0)
+Não é ancestral
+5 testando ancestral(9,4)
+Não é ancestral
+6 testando ancestral(0,4)
+É ancestral
+7 testando ancestral(2,4)
+É ancestral
+8 testando ancestral(2,4)
+É ancestral
+9 testando ancestral(2,8)
+Não é ancestral
